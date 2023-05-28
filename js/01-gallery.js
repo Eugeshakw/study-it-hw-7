@@ -23,6 +23,7 @@ refs.ul.addEventListener('click', openModal);
 
 
 function openModal(evt){
+  evt.preventDefault();
   if(evt.target.nodeName !== 'IMG'){
     return;
   }
