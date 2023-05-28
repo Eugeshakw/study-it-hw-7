@@ -1,45 +1,57 @@
 import { galleryItems } from './gallery-items.js';
 // Change code below this line
 
+
+
 const refs = {
     ul: document.querySelector('.gallery')
     
-
 }
+ 
+const gallery = galleryItems.map(({preview, original, description}) => {
+  return `<li class="gallery__item">
+  <a class="gallery__link" href="${original}">
+  <img class="gallery__image" src="${preview}" data-source="${original}" alt="${description}">
+  </img></a></li>`
 
-const imgItems = galleryItems.map(({preview, original, description }) =>{
-    return `
-    <li class="gallery__item">
-    <a class="gallery__link" href="${original}">
-    <img class="gallery__image" src="${preview}"data-source="${original}" alt="Image description">
-    </img>
-    </a>
-    </li>`
 }).join(' ');
-    refs.ul.innerHTML = imgItems;
+ 
+refs.ul.innerHTML = gallery;
 
 
-    refs.ul.addEventListener('click', openGallery)
+refs.ul.addEventListener('click', openModal);
 
-function openGallery(event) {
-    event.preventDefault();
-    if(event.target.nodeName !== 'IMG'){
-        return;
-    }
-    const imgUrl = event.target.dataset.source;
-    console.log(imgUrl);
-    const instance = basicLightbox.create(` 
-    <img src="${imgUrl}" width="800" height="600"></img>`);
-    instance.show();
-    const visible = instance.visible();
 
-    document.addEventListener('keydown', closeModal);
+function openModal(evt){
+  if(evt.target.nodeName !== 'IMG'){
+    return;
+  }
 
-    function closeModal(event) {
-        if(event.code === `Escape` && visible){
-            instance.close();
-            document.removeEventListener('keydown', closeModal); 
-        }
-    }
+  const imgUrl = evt.target.dataset.source;
+  const instance = basicLightbox.create(`
+    <img src="${imgUrl}" width="800" height="600">
+`)
+
+instance.show()
+
+const visible = instance.visible();
+
+document.addEventListener('keydown', closeModal);
+
+function closeModal(evt){
+  if(evt.code === `Escape` && visible){
+    instance.close();
+    document.removeEventListener('keydown', closeModal); 
+  }
+}
+console.log(gallery);
 
 }
+
+
+
+
+
+
+
+
